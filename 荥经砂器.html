@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>荥经砂器文化 - 土与火的千年艺术</title>
+    <script src="https://cdn.tailwindcss.com/3.3.3"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+    <style>
+        /* 字体设置 */
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        .title-font {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-weight: 700;
+        }
+
+        .subtitle-font {
+            font-family: 'ZCOOL QingKe HuangYou', sans-serif;
+        }
+
+        /* 毛玻璃效果样式 */
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* 导航项悬停效果 */
+        .nav-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+            .nav-item:after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -5px;
+                left: 0;
+                background-color: #8b5a2b;
+                transition: width 0.3s ease;
+            }
+
+            .nav-item:hover:after {
+                width: 100%;
+            }
+
+            .nav-item:hover {
+                color: #8b5a2b;
+                transform: translateY(-2px);
+            }
+
+        /* Banner区域样式 */
+        .banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('封面.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .banner:before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+                transform: rotate(30deg);
+            }
+
+        /* 淡入动画效果 */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        /* 气泡元素 */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(4px);
+            z-index: 1;
+        }
+
+        /* 阶梯状布局 */
+        .staggered-item:nth-child(odd) {
+            transform: translateX(30px);
+        }
+
+        .staggered-item:nth-child(even) {
+            transform: translateX(-30px);
+        }
+
+        /* 卡片悬停效果 */
+        .hover-card {
+            transition: all 0.4s ease;
+            border-left: 4px solid transparent;
+        }
+
+            .hover-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                border-left: 4px solid #8b5a2b;
+            }
+
+        /* 章节标题样式 */
+        .section-title {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+            .section-title:after {
+                content: '';
+                position: absolute;
+                width: 80px;
+                height: 3px;
+                background: linear-gradient(90deg, #8b5a2b, #d4a373);
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 3px;
+            }
+
+        /* 返回顶部按钮样式 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5a2b 0%, #d4a373 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 99;
+            box-shadow: 0 4px 20px rgba(139, 90, 43, 0.3);
+        }
+
+            .back-to-top:hover {
+                transform: translateY(-5px) scale(1.05);
+            }
+
+            .back-to-top.show {
+                opacity: 1;
+            }
+
+        /* 时间轴样式 */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+            margin: 2rem 0;
+        }
+
+            .timeline:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 3px;
+                background: linear-gradient(to bottom, #8b5a2b, #d4a373);
+                border-radius: 3px;
+            }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+            .timeline-item:before {
+                content: '';
+                position: absolute;
+                left: -3.2rem;
+                top: 0;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #8b5a2b;
+                border: 4px solid #fff;
+                box-shadow: 0 0 0 3px #8b5a2b;
+            }
+
+        /* 图片样式 */
+        .gallery-img {
+            transition: all 0.4s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+            .gallery-img:hover {
+                transform: scale(1.03);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+
+        /* 视频容器样式 */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+            .video-container:hover {
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+
+            .video-container video {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        /* 引用样式 */
+        blockquote {
+            border-left: 4px solid #d4a373;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            background: rgba(212, 163, 115, 0.08);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+        }
+
+        /* 页脚样式 */
+        footer {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2530 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+            footer:before {
+                content: '';
+                position: absolute;
+                top: -100px;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M1200 120L0 16.48 0 0 1200 0 1200 120z' fill='%23f5f7fa'%3E%3C/path%3E%3C/svg%3E");
+                background-size: cover;
+            }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- 气泡背景元素 -->
+    <div class="bubble bubble-1" style="width: 120px; height: 120px; top: 10%; left: 5%;"></div>
+    <div class="bubble bubble-2" style="width: 80px; height: 80px; top: 20%; right: 8%;"></div>
+    <div class="bubble bubble-3" style="width: 100px; height: 100px; bottom: 15%; left: 8%;"></div>
+    <div class="bubble bubble-4" style="width: 60px; height: 60px; bottom: 30%; right: 10%;"></div>
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/90 shadow-md z-50 backdrop-blur-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="text-2xl font-bold text-gray-800 title-font">荥经砂器文化</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-item text-gray-700">首页</a>
+                <a href="#history" class="nav-item text-gray-700">历史渊源</a>
+                <a href="#craft" class="nav-item text-gray-700">制作工艺</a>
+                <a href="#culture" class="nav-item text-gray-700">文化背景</a>
+                <a href="#visit" class="nav-item text-gray-700">实地考察</a>
+                <a href="#3d" class="nav-item text-gray-700">3D模型</a>
+            </div>
+            <button class="md:hidden text-gray-700" id="mobileMenuBtn">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white/95 w-full py-2 px-4 shadow-md backdrop-blur-sm" id="mobileMenu">
+            <a href="#home" class="block py-3 text-gray-700 border-b border-gray-100"><i class="fas fa-home mr-2"></i>首页</a>
+            <a href="#history" class="block py-3 text-gray-700 border-b border-gray-100"><i class="fas fa-history mr-2"></i>历史渊源</a>
+            <a href="#craft" class="block py-3 text-gray-700 border-b border-gray-100"><i class="fas fa-tools mr-2"></i>制作工艺</a>
+            <a href="#culture" class="block py-3 text-gray-700 border-b border-gray-100"><i class="fas fa-landmark mr-2"></i>文化背景</a>
+            <a href="#visit" class="block py-3 text-gray-700 border-b border-gray-100"><i class="fas fa-map-marked-alt mr-2"></i>实地考察</a>
+            <a href="#3d" class="block py-3 text-gray-700"><i class="fas fa-cube mr-2"></i>3D模型</a>
+        </div>
+    </nav>
+
+    <!-- Banner区 -->
+    <section id="home" class="banner flex items-center justify-center text-center text-white mt-16">
+        <div class="container mx-auto px-4 relative z-10">
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 title-font">荥经砂器</h1>
+            <p class="text-2xl md:text-3xl mb-8 subtitle-font">土与火的千年艺术</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#history" class="px-6 py-3 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-all duration-300 border border-white/30">
+                    <i class="fas fa-history mr-2"></i>探索历史
+                </a>
+                <a href="#craft" class="px-6 py-3 bg-[#8b5a2b] rounded-full text-white hover:bg-[#6d451e] transition-all duration-300">
+                    <i class="fas fa-tools mr-2"></i>制作工艺
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 概述部分 -->
+    <section class="py-20 bg-gradient-to-br from-blue-50 to-cyan-50/30">
+        <div class="container mx-auto px-4">
+            <div class="glassmorphism p-10 fade-in">
+                <h2 class="text-4xl font-bold mb-8 text-center text-gray-800 section-title">概述</h2>
+                <p class="text-gray-700 mb-6 text-lg leading-relaxed">荥经砂器，又称<strong class="text-[#8b5a2b]">荥经黑砂</strong>，是四川省雅安市荥经县的传统手工艺，距今已有<strong class="text-[#8b5a2b]">2300多年历史</strong>。其以严道古城独有的白善泥为原料，采用千年传承的"馒头窑"土法烧制而成，被誉为"土与火的艺术"。</p>
+
+                <div class="bg-gradient-to-r from-amber-50 to-blue-50 p-6 rounded-xl mb-6 border border-amber-100">
+                    <p class="text-gray-700 mb-4 text-lg"><i class="fas fa-award text-amber-600 mr-2"></i>2008年，荥经砂器烧制技艺被列入<strong>第二批国家级非物质文化遗产名录</strong>，2013年获得国家地理标志产品保护，2019年注册地理标志证明商标，享有<strong class="text-[#8b5a2b]">"东有宜兴紫砂，西有荥经黑砂"</strong>的美誉。</p>
+                </div>
+
+                <p class="text-gray-700 text-lg leading-relaxed">荥经砂器不仅是实用的生活器皿，更承载着丰富的文化内涵，是南方丝绸之路和茶马古道上的重要文化载体。如今，荥经砂器已从传统的砂锅、药罐等生活用品，发展成为兼具实用与艺术价值的高端工艺品，远销国内外。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 历史渊源 -->
+    <section id="history" class="py-20 bg-gradient-to-br from-amber-50/30 to-white">
+        <div class="container mx-auto px-4">
+            <div class="glassmorphism p-10 fade-in">
+                <h2 class="text-4xl font-bold mb-8 text-center text-gray-800 section-title">历史渊源</h2>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-amber-500">起源与发展</h3>
+                <p class="text-gray-700 mb-6 text-lg">荥经砂器的历史可追溯至战国时期，据史书记载和出土文物考证，仅从秦惠文王建筑严道（公元前312年）算起，已有2300多年历史。1982年，考古学家在荥经县严道古城遗址附近发掘的秦汉墓葬中，发现了与现代荥经砂器工艺相似的陶器，证实了其悠久的制作传统。</p>
+
+                <div class="mb-10">
+                    <h4 class="text-xl font-semibold mb-6 text-gray-700 text-center">荥经砂器的发展历程：</h4>
+
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h5 class="text-lg font-semibold text-amber-700">先秦时期</h5>
+                            <p class="text-gray-600">砂器制作技艺初步形成，主要生产简单的生活用具。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5 class="text-lg font-semibold text-amber-700">秦汉时期</h5>
+                            <p class="text-gray-600">随着南方丝绸之路的开通，荥经作为商贸重镇，砂器制作工艺日趋成熟，产品开始向外流通。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5 class="text-lg font-semibold text-amber-700">唐宋时期</h5>
+                            <p class="text-gray-600">砂器与茶马古道贸易紧密结合，成为重要的贸易商品。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5 class="text-lg font-semibold text-amber-700">明清时期</h5>
+                            <p class="text-gray-600">砂器制作技艺进一步发展，形成了较为完善的生产体系。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h5 class="text-lg font-semibold text-amber-700">近现代</h5>
+                            <p class="text-gray-600">20世纪50年代成立国营砂锅厂，80年代后逐渐转型为工艺砂器，2008年被列入国家级非物质文化遗产名录。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-amber-500">重要历史事件</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl hover-card">
+                        <p class="text-gray-700"><i class="fas fa-calendar-alt mr-2 text-amber-600"></i><strong>1972年、1976年、1977年</strong>，荥经砂器参加全国广交会、北京工艺美术产品展。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl hover-card">
+                        <p class="text-gray-700"><i class="fas fa-calendar-alt mr-2 text-amber-600"></i><strong>1981年</strong>，荥经砂器参加美国费城工艺美术产品展览。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl hover-card">
+                        <p class="text-gray-700"><i class="fas fa-calendar-alt mr-2 text-amber-600"></i><strong>2008年</strong>，荥经砂器烧制技艺被列入第二批国家级非物质文化遗产名录。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl hover-card">
+                        <p class="text-gray-700"><i class="fas fa-calendar-alt mr-2 text-amber-600"></i><strong>2009年</strong>，荥经被授予"中华砂器第一乡"称号。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl hover-card">
+                        <p class="text-gray-700"><i class="fas fa-calendar-alt mr-2 text-amber-600"></i><strong>2013年</strong>，荥经黑砂被列为国家地理标志保护产品。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl hover-card">
+                        <p class="text-gray-700"><i class="fas fa-calendar-alt mr-2 text-amber-600"></i><strong>2019年</strong>，荥经砂器成功注册地理标志证明商标。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-5 rounded-xl hover-card md:col-span-2">
+                        <p class="text-gray-700"><i class="fas fa-calendar-alt mr-2 text-amber-600"></i><strong>2024年</strong>，荥经砂器代表雅安非遗亮相2024全球熊猫伙伴大会。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 制作工艺 -->
+    <section id="craft" class="py-20 bg-gradient-to-br from-blue-50/50 to-cyan-50/50">
+        <div class="container mx-auto px-4">
+            <div class="glassmorphism p-10 fade-in">
+                <h2 class="text-4xl font-bold mb-8 text-center text-gray-800 section-title">制作工艺</h2>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-blue-400">原料特性</h3>
+                <p class="text-gray-700 mb-6 text-lg">荥经砂器的独特品质源于其稀缺的原料资源和科学的配比工艺。核心原料"白善泥"仅产于荥经县严道古城遗址周围10平方公里范围内，是距今约2亿年前三叠纪时期沉积形成的优质黏土。</p>
+
+                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl mb-8 border border-blue-100">
+                    <h4 class="text-lg font-semibold mb-4 text-gray-700 flex items-center">
+                        <i class="fas fa-flask text-blue-600 mr-2"></i>科学检测数据显示：
+                    </h4>
+                    <p class="text-gray-700 mb-4">白善泥主要化学成分为：Al₂O₃（28-32%）、Fe₂O₃（8-12%）、CaO（3-5%）、MgO（2-4%），以及微量的钾、钠氧化物。这些成分赋予砂器良好的热稳定性和化学惰性，确保其耐高温、抗腐蚀的特性。</p>
+                    <p class="text-gray-700">尤为重要的是，白善泥中不含铅、镉等有毒重金属元素，pH值呈弱碱性，符合现代健康生活理念。</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-blue-400">制作工序</h3>
+                <p class="text-gray-700 mb-8 text-lg">荥经砂器的制作工艺复杂精细，主要包括以下七道工序：</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 staggered-container">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl hover-card staggered-item">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">1</span>采料
+                        </h4>
+                        <p class="text-gray-600">选取古城附近的白善泥，露天堆放一段时间，使其自然风化。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl hover-card staggered-item">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">2</span>粉碎
+                        </h4>
+                        <p class="text-gray-600">将风化后的粘土和煤渣碾磨成细粉，传统方法采用役牛碾细，现代则多用球磨机粉碎。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl hover-card staggered-item">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">3</span>搅拌
+                        </h4>
+                        <p class="text-gray-600">按比例将粘土粉和煤渣粉混合，加入适量水分，充分搅拌揉练成泥团。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl hover-card staggered-item">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">4</span>制胚
+                        </h4>
+                        <p class="text-gray-600">采用传统的托转盘手工拉胚，脚蹬踩转盘，根据手感和经验成型。复杂器型需分"底坯"和"接坯"两步完成。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl hover-card staggered-item">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">5</span>晾胚
+                        </h4>
+                        <p class="text-gray-600">将成型的坯体放置在阴凉通风处自然晾干，避免阳光直射导致开裂。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl hover-card staggered-item">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">6</span>焙烧
+                        </h4>
+                        <p class="text-gray-600">将晾干的坯体放入"馒头窑"中，以煤为燃料，经1000℃-1280℃高温焙烧约1小时。</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-5 rounded-xl hover-card md:col-span-2 staggered-item">
+                        <h4 class="text-lg font-semibold mb-2 text-gray-700 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mr-3">7</span>上釉与出窑
+                        </h4>
+                        <p class="text-gray-600">砂器烧透后，迅速将其从窑中取出，投入装有杉树枝、松木屑的地坑中，利用高温使木屑燃烧产生的烟雾在砂器表面形成氧化物结晶，即"取釉"工艺。待冷却后取出，检验分类。</p>
+                    </div>
+                </div>
+
+                <!-- 制胚过程视频展示 -->
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-blue-400">制胚过程视频展示</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h4 class="text-lg font-semibold mb-3 text-gray-700">视频1：初步形状塑造</h4>
+                        <div class="video-container">
+                            <video controls poster="https://images.unsplash.com/photo-1573165231977-3b2ddb093cf0?q=80&w=2069&auto=format&fit=crop">
+                                <source src="1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-3">展示工匠使用拉胚转盘初步拉制砂器坯体的基本形状，脚蹬转盘匀速旋转，双手配合提拉泥土形成器型轮廓。</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h4 class="text-lg font-semibold mb-3 text-gray-700">视频2：进一步塑造形状</h4>
+                        <div class="video-container">
+                            <video controls poster="https://images.unsplash.com/photo-1598627226807-1b0e9b8d9f9c?q=80&w=2069&auto=format&fit=crop">
+                                <source src="2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-3">展示在初步成型基础上，通过手指按压、塑形工具修整，确定砂器的口沿、腹部、底部等细节形态。</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h4 class="text-lg font-semibold mb-3 text-gray-700">视频3：花纹雕刻</h4>
+                        <div class="video-container">
+                            <video controls poster="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1945&auto=format&fit=crop">
+                                <source src="3.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-3">展示使用雕刻工具，在半干坯体表面刻划传统纹饰或新型纹饰，增强砂器的艺术表现力。</p>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-blue-400">独特技艺</h3>
+                <p class="text-gray-700 mb-6 text-lg">荥经砂器最具特色的工艺有两点：一是<strong class="text-blue-600">馒头窑</strong>烧制，这是目前世界上唯一采用的土法烧制砂器的窑型；二是<strong class="text-blue-600">闷烧呛釉</strong>工艺，通过高温坯体与木屑等可燃物的化学反应，自然形成银灰色的金属光泽表层，无需额外施釉。</p>
+
+                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl mb-6 border border-blue-100">
+                    <p class="text-gray-700">这些独特的工艺使荥经砂器具有耐高温、抗腐蚀、不氧化、不变色、不变形等特点，煮食不与食品中的酸、碱、盐发生化学反应，能保持食物的营养成分和原汁原味，尤其适合熬制中药，不会改变药性。</p>
+                </div>
+
+                <div class="mt-10">
+                    <div class="gallery-img">
+                        <img src="荥经传统砂器碗.jpg" alt="荥经传统砂器碗.jpg" class="w-full rounded-lg cursor-pointer" id="potteryImg">
+                    </div>
+                    <p class="text-sm text-gray-600 mt-3 bg-blue-50 p-3 rounded-lg"><strong>图：荥经传统砂器碗</strong><br>该砂器碗采用严道古城特有的白善泥与煤渣混合烧制而成，表面呈现深黑色，质地粗糙却富有肌理感，边缘保留手工制作的自然不规则形态。器物置于传统木板上，背景报纸与木质桌面营造出古朴的制作场景氛围，直观展现了荥经砂器"土与火的艺术"的质朴美学。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 文化背景 -->
+    <section id="culture" class="py-20 bg-gradient-to-br from-amber-50/30 to-white">
+        <div class="container mx-auto px-4">
+            <div class="glassmorphism p-10 fade-in">
+                <h2 class="text-4xl font-bold mb-8 text-center text-gray-800 section-title">文化背景</h2>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-amber-500">文化内涵</h3>
+                <p class="text-gray-700 mb-6 text-lg">荥经砂器不仅是一种实用器皿，更是承载着地方历史文化的活态遗产。它体现了荥经人民适应自然、利用自然的智慧，反映了当地的生活方式、价值观念和审美情趣。</p>
+
+                <blockquote>
+                    "朴素大方、实用耐用"的美学风格体现了巴蜀文化中"尚简"、"务实"的精神特质。
+                </blockquote>
+
+                <p class="text-gray-700 mb-6 text-lg">在漫长的历史进程中，荥经砂器形成了"朴素大方、实用耐用"的美学风格，体现了巴蜀文化中"尚简"、"务实"的精神特质。其器型设计注重功能与形式的统一，线条简洁流畅，纹饰古朴典雅，展现了中国传统工艺"天人合一"的造物理念。</p>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-amber-500">历史地位</h3>
+                <p class="text-gray-700 mb-6 text-lg">荥经地处南方丝绸之路和茶马古道的交汇点，是古代汉文化与西南少数民族文化交流的重要枢纽。荥经砂器作为当地的特色产品，不仅满足了沿线商旅的生活需求，还成为文化交流的载体，促进了不同地域间的技术传播和文化融合。</p>
+
+                <div class="bg-gradient-to-r from-amber-50 to-amber-100 p-6 rounded-xl mb-6">
+                    <p class="text-gray-700">在茶马古道贸易中，荥经砂器与茶叶、丝绸等商品一同流通，成为连接内地与边疆的重要贸易商品。砂器的制作技艺也随着贸易往来不断传播和发展，对西南地区的制陶业产生了深远影响。</p>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-amber-500">现代价值</h3>
+                <p class="text-gray-700 mb-6 text-lg">近年来，荥经砂器在传承传统工艺的基础上，不断创新发展，从单一的生活用品向高端工艺品、文创产品、旅游纪念品等多元化方向拓展。2024年，荥经砂器产业年产值达4亿元，从业人员约1万人，成为当地经济发展的重要支柱和文化名片。</p>
+
+                <div class="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl">
+                    <p class="text-gray-700">荥经砂器的保护与传承不仅关乎一项传统技艺的延续，更是对地方文化身份的认同和文化自信的建立。通过发展砂器文化产业，荥经正在探索一条"文旅融合"的乡村振兴之路，让古老的非遗在当代焕发新的生机。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 实地考察 -->
+    <section id="visit" class="py-20 bg-gradient-to-br from-blue-50/50 to-cyan-50/50">
+        <div class="container mx-auto px-4">
+            <div class="glassmorphism p-10 fade-in">
+                <h2 class="text-4xl font-bold mb-8 text-center text-gray-800 section-title">实地考察</h2>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-blue-400">考察地一-曾庆红砂器工作室</h3>
+                <p class="text-gray-700 mb-6 text-lg"> 由省级非遗传承人、曾氏砂器世家第九代传人曾庆红创立，坚持手工制作和传统“馒头窑”烧制。产品涵盖茶具、艺术摆件等100余种，保留古朴粗犷风格，又融入现代审美。工作室每周六定点烧窑，免费对外开放，可参观完整制作流程。还设有体验活动，可亲手制作砂器。</p>
+
+                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl mb-6">
+                    <h4 class="text-lg font-semibold mb-4 text-gray-700">主要内容</h4>
+                    <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                        <li><strong>壹</strong>：了解砂锅历史，并参观工作室陈列的精美砂锅作品。</li>
+                        <li><strong>贰</strong>：体验黑砂文化，亲手制作砂锅。</li>
+                        <li><strong>叁</strong>：与传承人进行交谈，深入了解砂锅文化及历史。</li>
+                    </ul>
+                </div>
+
+                <h3 class="text-2xl font-semibold mb-6 text-gray-700 pl-4 border-l-4 border-blue-400">考察地二-曾家老窑</h3>
+                <p class="text-gray-700 mb-6 text-lg">荥经曾家窑是荥经砂器制作的代表之一，由曾氏砂器世家创立，传承至今已到第十代。曾家窑坚持手工制作和传统“馒头窑”烧制，产品涵盖实用砂器和工艺砂器，包括茶具、艺术摆件等100余种，年产各类砂器3万余件。</p>
+
+                <div class="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-xl mb-6">
+                    <h4 class="text-lg font-semibold mb-3 text-gray-700">主要内容</h4>
+                    <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                        <li><strong>壹</strong>：参观制作砂锅的地方，见证一块普通陶泥蜕变成砂锅的奇妙历程。</li>
+                        <li><strong>贰</strong>：观察每一步砂锅制作工艺的详细步骤，近距离感受传统砂锅从制坯到烧制的全过程。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D模型展示 -->
+    <section id="3d" class="py-20 bg-gradient-to-br from-amber-50/30 to-white">
+        <div class="container mx-auto px-4">
+            <div class="glassmorphism p-10 fade-in">
+                <h2 class="text-4xl font-bold mb-8 text-center text-gray-800 section-title">3D模型展示</h2>
+
+                <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-10 rounded-2xl text-center">
+                    <i class="fas fa-cube text-6xl text-amber-600 mb-6"></i>
+                    <h3 class="text-2xl font-semibold mb-6 text-gray-700">荥经砂器3D数字展示</h3>
+                    <p class="text-gray-700 mb-6">通过先进的3D建模技术，我们为您呈现荥经砂器的精细结构和独特工艺。</p>
+
+                    <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="text-lg font-semibold mb-4 text-gray-700">操作指南</h4>
+                        <ul class="list-disc pl-6 text-gray-700 space-y-2 text-left">
+                            <li>使用鼠标拖拽可以旋转模型，从不同角度欣赏</li>
+                            <li>滚轮滑动可以缩放模型，查看细节</li>
+                            <li>点击右下角控制按钮可重置视图</li>
+                            <li>探索砂器的内部结构和外部纹饰</li>
+                        </ul>
+                    </div>
+
+                    <p class="text-gray-700 mt-8">通过3D交互体验，您可以更加直观地了解荥经砂器的制作工艺和艺术价值。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 参考资料 -->
+    <section class="py-16 bg-gradient-to-br from-blue-50/50 to-cyan-50/50">
+        <div class="container mx-auto px-4">
+            <div class="glassmorphism p-8">
+                <h3 class="text-2xl font-semibold mb-6 text-center text-gray-700 section-title">参考资料</h3>
+                <ul class="list-disc pl-6 text-gray-700 space-y-3">
+                    <li>荥经县人民政府. 《荥经砂器产业概况介绍》. 2019年.</li>
+                    <li>川观新闻. 《荥经砂器:文旅发展中，凸显国家级非遗的多种可能性》. 2021年.</li>
+                    <li>四川省地理标志产品保护促进会. 《荥经砂器》. 2020年.</li>
+                    <li>荥经县文化广播电视体育和旅游局. 《荥经县2024年国民经济和社会发展计划执行情况》. 2025年.</li>
+                    <li>何毅华, 李克难. 《基于陶瓷文化科普的荥经砂器的可视化研究》. 2024年.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="pt-20 pb-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0 text-center md:text-left">
+                    <h3 class="text-2xl font-bold mb-2 text-white title-font">荥经砂器文化</h3>
+                    <p class="text-gray-300">土与火的千年艺术</p>
+                </div>
+                <div class="flex space-x-6 mb-6 md:mb-0">
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors text-xl"><i class="fab fa-weixin"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors text-xl"><i class="fab fa-weibo"></i></a>
+                    <a href="#" class="text-gray-300 hover:text-white transition-colors text-xl"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">© 2025 荥经砂器文化传承与保护中心. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- 图片放大模态框 -->
+    <div class="modal" id="imageModal">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <img src="" alt="" class="modal-content" id="modalImage">
+    </div>
+
+    <script>
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 返回顶部按钮
+        const backToTop = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 图片放大功能
+        const potteryImg = document.getElementById('potteryImg');
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalClose = document.getElementById('modalClose');
+
+        potteryImg.addEventListener('click', () => {
+            modalImage.src = potteryImg.src;
+            modalImage.alt = potteryImg.alt;
+            imageModal.style.display = 'flex';
+        });
+
+        modalClose.addEventListener('click', () => {
+            imageModal.style.display = 'none';
+        });
+
+        imageModal.addEventListener('click', (e) => {
+            if (e.target === imageModal) {
+                imageModal.style.display = 'none';
+            }
+        });
+
+        // 滚动动画
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', fadeInOnScroll);
+        window.addEventListener('load', fadeInOnScroll);
+
+        // 页面加载后初始化
+        window.addEventListener('load', () => {
+            // 初始化所有元素为可见（如果已经在视口中）
+            fadeInOnScroll();
+
+            // 添加气泡动画
+            const bubbles = document.querySelectorAll('.bubble');
+            bubbles.forEach(bubble => {
+                const randomSize = Math.random() * 60 + 40;
+                const randomTop = Math.random() * 80 + 10;
+                const randomLeft = Math.random() * 80 + 10;
+                const randomDuration = Math.random() * 10 + 10;
+
+                bubble.style.width = `${randomSize}px`;
+                bubble.style.height = `${randomSize}px`;
+                bubble.style.top = `${randomTop}%`;
+                bubble.style.left = `${randomLeft}%`;
+                bubble.style.animation = `float ${randomDuration}s ease-in-out infinite`;
+
+                // 为每个气泡创建独特的浮动动画
+                const style = document.createElement('style');
+                style.textContent = `
+                        @keyframes float {
+                            0% { transform: translateY(0) rotate(0deg); }
+                            50% { transform: translateY(-20px) rotate(5deg); }
+                            100% { transform: translateY(0) rotate(0deg); }
+                        }
+                    `;
+                document.head.appendChild(style);
+            });
+        });
+    </script>
+</body>
+</html>
